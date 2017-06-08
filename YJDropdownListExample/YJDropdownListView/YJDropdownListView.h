@@ -2,7 +2,7 @@
 //  YJDropdownListView.h
 //  YJDropdownListExample
 //
-//  Created by Mac on 2017/6/7.
+//  Created by Jeremiah on 2017/6/7.
 //  Copyright © 2017年 Jeremiah. All rights reserved.
 //
 //  文本框下拉列表
