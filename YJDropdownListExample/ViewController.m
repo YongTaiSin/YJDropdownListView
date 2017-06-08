@@ -69,7 +69,7 @@
     textField.placeholder = placeholder;
     textField.font = [UIFont systemFontOfSize:18];
     textField.textAlignment = NSTextAlignmentLeft;
-    textField.borderStyle = UITextBorderStyleLine;
+    textField.borderStyle = UITextBorderStyleRoundedRect;
     return textField;
 }
 
