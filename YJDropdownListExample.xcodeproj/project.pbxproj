@@ -13,7 +13,7 @@
 		1487D5C11EE8FC5000788DEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1487D5BF1EE8FC5000788DEE /* Main.storyboard */; };
 		1487D5C31EE8FC5000788DEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1487D5C21EE8FC5000788DEE /* Assets.xcassets */; };
 		1487D5C61EE8FC5000788DEE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1487D5C41EE8FC5000788DEE /* LaunchScreen.storyboard */; };
-		1487D5D01EE8FCE800788DEE /* YJDropdownListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1487D5CF1EE8FCE800788DEE /* YJDropdownListView.m */; };
+		C71EEB1A21E738ED006A560B /* YJDropdownListView.m in Sources */ = {isa = PBXBuildFile; fileRef = C71EEB1921E738ED006A560B /* YJDropdownListView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		1487D5C21EE8FC5000788DEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1487D5C51EE8FC5000788DEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1487D5C71EE8FC5000788DEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1487D5CE1EE8FCE800788DEE /* YJDropdownListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJDropdownListView.h; sourceTree = "<group>"; };
-		1487D5CF1EE8FCE800788DEE /* YJDropdownListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJDropdownListView.m; sourceTree = "<group>"; };
+		C71EEB1821E738ED006A560B /* YJDropdownListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJDropdownListView.h; sourceTree = "<group>"; };
+		C71EEB1921E738ED006A560B /* YJDropdownListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJDropdownListView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +61,7 @@
 		1487D5B51EE8FC5000788DEE /* YJDropdownListExample */ = {
 			isa = PBXGroup;
 			children = (
-				1487D5CD1EE8FCE800788DEE /* YJDropdownListView */,
+				C71EEB1721E738ED006A560B /* YJDropdownListView */,
 				1487D5B91EE8FC5000788DEE /* AppDelegate.h */,
 				1487D5BA1EE8FC5000788DEE /* AppDelegate.m */,
 				1487D5BC1EE8FC5000788DEE /* ViewController.h */,
@@ -83,14 +83,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1487D5CD1EE8FCE800788DEE /* YJDropdownListView */ = {
+		C71EEB1721E738ED006A560B /* YJDropdownListView */ = {
 			isa = PBXGroup;
 			children = (
-				1487D5CE1EE8FCE800788DEE /* YJDropdownListView.h */,
-				1487D5CF1EE8FCE800788DEE /* YJDropdownListView.m */,
+				C71EEB1821E738ED006A560B /* YJDropdownListView.h */,
+				C71EEB1921E738ED006A560B /* YJDropdownListView.m */,
 			);
 			path = YJDropdownListView;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -165,7 +165,7 @@
 			files = (
 				1487D5BE1EE8FC5000788DEE /* ViewController.m in Sources */,
 				1487D5BB1EE8FC5000788DEE /* AppDelegate.m in Sources */,
-				1487D5D01EE8FCE800788DEE /* YJDropdownListView.m in Sources */,
+				C71EEB1A21E738ED006A560B /* YJDropdownListView.m in Sources */,
 				1487D5B81EE8FC5000788DEE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

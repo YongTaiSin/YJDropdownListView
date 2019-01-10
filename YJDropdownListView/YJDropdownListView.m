@@ -1,9 +1,9 @@
 //
 //  YJDropdownListView.m
-//  CanYin
+//  YJDropdownListExample
 //
-//  Created by Mac on 2017/6/7.
-//  Copyright © 2017年 Zhongao. All rights reserved.
+//  Created by Jeremiah on 2017/6/7.
+//  Copyright © 2017年 Jeremiah. All rights reserved.
 //
 
 #import "YJDropdownListView.h"
@@ -37,6 +37,9 @@
 }
 #pragma mark - setup
 - (void)setup{
+    _maxHeight = 200;
+    _offsetY = 0;
+    _borderPosition = YJListViewBorderAll;
     self.backgroundColor = [UIColor clearColor];
     [self setFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
     // tableView
@@ -103,18 +106,20 @@
 - (void)show {
     //校验合法性
     [self validateProcess];
+    [kWindow endEditing:YES];
     [kWindow addSubview:self];
     CGRect rect = [self.superView convertRect:self.superView.bounds toView:kWindow];
     self.tableView.frame = CGRectMake(CGRectGetMinX(rect),
-                                          CGRectGetMaxY(rect),
+                                          CGRectGetMaxY(rect)+_offsetY,
                                           CGRectGetWidth(rect),
                                           0);
     [UIView animateWithDuration:0.2
                      animations:^{
                          self.tableView.frame = CGRectMake(CGRectGetMinX(rect),
-                                                               CGRectGetMaxY(rect),
+                                                               CGRectGetMaxY(rect)+_offsetY,
                                                                CGRectGetWidth(rect),
                                                                [self figureTableHeight]);
+                         self.tableView.borderPosition = self.borderPosition;
                      }];
 
 }
@@ -162,10 +167,10 @@
 }
 /**
  *
- *  计算 table 的高度 (上限200)
+ *  计算 table 的高度 (上限默认200)
  */
 - (CGFloat)figureTableHeight {
-    CGFloat maxHeight = 200.;
+    CGFloat maxHeight = _maxHeight;
     NSInteger number = 0;
     if (self.rowsNumBlock) {
         number = self.rowsNumBlock(0);
@@ -186,6 +191,28 @@
         self.tableView.scrollEnabled = NO;
     }
     return height;
+}
+
+#pragma mark - setter
+- (void)setBorderColor:(UIColor *)borderColor {
+    _borderColor = borderColor;
+    self.tableView.layer.borderColor = borderColor.CGColor;
+}
+- (void)setBorderWidth:(CGFloat)borderWidth {
+    _borderWidth = borderWidth;
+    self.tableView.layer.borderWidth = borderWidth;
+}
+- (void)setShowSeparatorLine:(BOOL)showSeparatorLine {
+    _showSeparatorLine = showSeparatorLine;
+    self.tableView.separatorStyle = _showSeparatorLine?UITableViewCellSeparatorStyleSingleLine:UITableViewCellSeparatorStyleNone;
+}
+- (void)setSeparatorColor:(UIColor *)separatorColor {
+    _separatorColor = separatorColor;
+    self.tableView.separatorColor = _separatorColor;
+}
+- (void)setSeparatorInset:(UIEdgeInsets)separatorInset {
+    _separatorInset = separatorInset;
+    _tableView.separatorInset = _separatorInset;
 }
 
 #pragma mark - UITableViewDataSource
@@ -237,4 +264,71 @@
 {
     [self dismiss];
 }
+@end
+
+@implementation UIView (Border)
+@dynamic borderPosition;
+
+#pragma mark - 局部分割线功能
+- (void)setBorderPosition:(YJListViewBorder)borderPosition {
+    CGFloat borderWidth = self.layer.borderWidth;
+    
+    if (borderPosition & YJListViewBorderAll) {
+        return;
+    }
+    if (borderPosition & YJListViewBorderBottom) {
+        [self addBorder:self borderWidth:borderWidth position:YJListViewBorderBottom];
+    }
+    if (borderPosition & YJListViewBorderLeft) {
+        [self addBorder:self borderWidth:borderWidth position:YJListViewBorderLeft];
+    }
+    if (borderPosition & YJListViewBorderRight) {
+        [self addBorder:self borderWidth:borderWidth position:YJListViewBorderRight];
+    }
+    if (borderPosition & YJListViewBorderTop) {
+       [self addBorder:self borderWidth:borderWidth position:YJListViewBorderTop];
+    }
+    self.layer.borderWidth = 0;
+}
+
+- (void)addBorder:(UIView *)view borderWidth:(CGFloat)borderWidth position:(YJListViewBorder)borderPosition {
+    CGColorRef borderColor = view.layer.borderColor;
+    if (view.layer.borderWidth > 1000 || view.layer.borderWidth == 0) {
+        borderWidth = 0.5;
+    }
+    else
+        borderWidth = view.layer.borderWidth;
+    CALayer *border = [CALayer layer];
+    border.backgroundColor = borderColor;
+    switch (borderPosition) {
+        case YJListViewBorderTop:
+        {
+            border.frame = CGRectMake(0, 0, view.frame.size.width, borderWidth);
+            border.name = @"top";
+        }
+            break;
+        case YJListViewBorderBottom:
+        {
+            border.frame = CGRectMake(0, view.frame.size.height-borderWidth, view.frame.size.width, borderWidth);
+            border.name = @"bottom";
+        }
+            break;
+        case YJListViewBorderLeft:
+        {
+            border.frame = CGRectMake(0, 0, borderWidth, view.frame.size.height);
+            border.name = @"left";
+        }
+            break;
+        case YJListViewBorderRight:
+        {
+            border.frame = CGRectMake(view.frame.size.width-borderWidth, 0, borderWidth, view.frame.size.height);
+            border.name = @"right";
+        }
+            break;
+        default:
+            break;
+    }
+    [view.layer addSublayer:border];
+}
+
 @end

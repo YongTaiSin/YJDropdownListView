@@ -90,7 +90,9 @@
     YJDropdownListView *listView = [YJDropdownListView dropDownListView];
     listView.borderColor = kRGBColor(230,230,230);
     listView.borderWidth = 1;
+    listView.borderPosition = YJListViewBorderLeft | YJListViewBorderRight | YJListViewBorderBottom;
     listView.maxHeight = 300;
+    listView.offsetY = -5;
     listView.separatorColor = [UIColor redColor];
     listView.showSeparatorLine = YES;
     listView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
