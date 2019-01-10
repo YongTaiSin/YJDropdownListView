@@ -23,18 +23,31 @@ typedef YJDropdownListView *(^DropdownConfigureCell)(DropdownCellBlock cellBlock
 typedef YJDropdownListView *(^DropdowndSelectRowAtIndexPath)(DropdownSelectRowBlock selectBlock);
 typedef YJDropdownListView *(^DropdownListShow)(UIView *superView);
 @interface YJDropdownListView : UIView
-///列表items数据源
+/// 列表items数据源
 @property (nonatomic, copy ,readonly) DropdownListItems items;
-///列表行数
+/// 列表行数
 @property (nonatomic, copy ,readonly) DropdownRowsNumberInSection numberOfRowsInSection;
-///行高
+/// 行高
 @property (nonatomic, copy ,readonly) DropdownRowHeightAtIndexPath heightForRowAtIndexPath;
-///自己构造cell数据源
+/// 自己构造cell数据源
 @property (nonatomic, copy ,readonly) DropdownConfigureCell cellForRowAtIndexPath;
-///cell选中
+/// cell选中
 @property (nonatomic, copy ,readonly) DropdowndSelectRowAtIndexPath didSelectRowAtIndexPath;
-///show
+/// show
 @property (nonatomic, copy ,readonly) DropdownListShow showOnSuperview;
+/// 边框颜色
+@property (nonatomic, strong) UIColor *borderColor;
+/// 边框宽度
+@property (nonatomic, assign) CGFloat borderWidth;
+/// 最大高度 默认200
+@property (nonatomic, assign) CGFloat maxHeight;
+/// 是否显示分割线 默认不显示
+@property (nonatomic, assign) BOOL showSeparatorLine;
+/// 分割线颜色
+@property (nonatomic, strong) UIColor *separatorColor;
+/// 分割线缩进
+@property (nonatomic, assign) UIEdgeInsets separatorInset;
+
 /**
  谓词，返回self
  */

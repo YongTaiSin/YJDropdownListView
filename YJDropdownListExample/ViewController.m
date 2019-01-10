@@ -88,6 +88,12 @@
 - (void)showDropDownlist2
 {
     YJDropdownListView *listView = [YJDropdownListView dropDownListView];
+    listView.borderColor = kRGBColor(230,230,230);
+    listView.borderWidth = 1;
+    listView.maxHeight = 300;
+    listView.separatorColor = [UIColor redColor];
+    listView.showSeparatorLine = YES;
+    listView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     NSArray *arr = @[@"haha",@"hehe",@"heoheo"];
     listView.numberOfRowsInSection(^NSInteger(NSInteger section) {
         return arr.count;

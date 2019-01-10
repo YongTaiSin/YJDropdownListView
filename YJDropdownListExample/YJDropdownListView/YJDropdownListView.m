@@ -37,6 +37,7 @@
 }
 #pragma mark - setup
 - (void)setup{
+    _maxHeight = 200;
     self.backgroundColor = [UIColor clearColor];
     [self setFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
     // tableView
@@ -163,10 +164,10 @@
 }
 /**
  *
- *  计算 table 的高度 (上限200)
+ *  计算 table 的高度 (上限默认200)
  */
 - (CGFloat)figureTableHeight {
-    CGFloat maxHeight = 200.;
+    CGFloat maxHeight = _maxHeight;
     NSInteger number = 0;
     if (self.rowsNumBlock) {
         number = self.rowsNumBlock(0);
@@ -187,6 +188,28 @@
         self.tableView.scrollEnabled = NO;
     }
     return height;
+}
+
+#pragma mark - setter
+- (void)setBorderColor:(UIColor *)borderColor {
+    _borderColor = borderColor;
+    self.tableView.layer.borderColor = borderColor.CGColor;
+}
+- (void)setBorderWidth:(CGFloat)borderWidth {
+    _borderWidth = borderWidth;
+    self.tableView.layer.borderWidth = borderWidth;
+}
+- (void)setShowSeparatorLine:(BOOL)showSeparatorLine {
+    _showSeparatorLine = showSeparatorLine;
+    self.tableView.separatorStyle = _showSeparatorLine?UITableViewCellSeparatorStyleSingleLine:UITableViewCellSeparatorStyleNone;
+}
+- (void)setSeparatorColor:(UIColor *)separatorColor {
+    _separatorColor = separatorColor;
+    self.tableView.separatorColor = _separatorColor;
+}
+- (void)setSeparatorInset:(UIEdgeInsets)separatorInset {
+    _separatorInset = separatorInset;
+    _tableView.separatorInset = _separatorInset;
 }
 
 #pragma mark - UITableViewDataSource
