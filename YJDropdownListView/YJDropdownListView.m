@@ -17,9 +17,12 @@
 //弹出下拉列表的控件
 @property (nonatomic, weak) UIView  *superView;
 @property (nonatomic, copy) DropdownItemsBlock itemsBlock;
+@property (nonatomic, copy) DropdownSectionsNumBlock sectionsNumBlock;
 @property (nonatomic, copy) DropdownRowsNumBlock rowsNumBlock;
 @property (nonatomic, copy) DropdownRowHeightBlock rowHeightBlock;
+@property (nonatomic, copy) DropdownHeaderHeightBlock headerHeightBlock;
 @property (nonatomic, copy) DropdownCellBlock cellBlock;
+@property (nonatomic, copy) DropdownHeaderViewBlock headerBlock;
 @property (nonatomic, copy) DropdownSelectRowBlock selectBlock;
 @end
 @implementation YJDropdownListView
@@ -62,6 +65,13 @@
         return weakSelf;
     };
 }
+- (DropdownSectionsNumber)numberOfSectionsInTableView{
+    kWeakSelf
+    return ^YJDropdownListView *(DropdownSectionsNumBlock sectionsNumBlock) {
+        weakSelf.sectionsNumBlock = sectionsNumBlock;
+        return weakSelf;
+    };
+}
 - (DropdownRowsNumberInSection)numberOfRowsInSection
 {
     kWeakSelf
@@ -78,11 +88,27 @@
         return weakSelf;
     };
 }
+- (DropdownHeaderHeightInSection)heightForHeaderInSection
+{
+    kWeakSelf
+    return ^YJDropdownListView *(DropdownHeaderHeightBlock headerHeightBlock) {
+        weakSelf.headerHeightBlock = headerHeightBlock;
+        return weakSelf;
+    };
+}
 - (DropdownConfigureCell)cellForRowAtIndexPath
 {
     kWeakSelf
     return ^YJDropdownListView *(DropdownCellBlock cellBlock) {
         weakSelf.cellBlock = cellBlock;
+        return weakSelf;
+    };
+}
+- (DropdownConfigureHeaderView)viewForHeaderInSection
+{
+    kWeakSelf
+    return ^YJDropdownListView *(DropdownHeaderViewBlock headerBlock) {
+        weakSelf.headerBlock = headerBlock;
         return weakSelf;
     };
 }
@@ -171,18 +197,27 @@
  */
 - (CGFloat)figureTableHeight {
     CGFloat maxHeight = _maxHeight;
-    NSInteger number = 0;
-    if (self.rowsNumBlock) {
-        number = self.rowsNumBlock(0);
-    }else if(self.itemsBlock)
-    {
-        number = self.itemsBlock().count;
+    NSInteger section = 1;
+    if (self.sectionsNumBlock) {
+        section = self.sectionsNumBlock(self.tableView);
     }
     __block CGFloat height = 0.0f;
-    for (NSInteger i = 0; i < number; i ++) {
-        CGFloat h = [self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        height = height + h;
+    for (int i = 0; i < section; i++) {
+        NSInteger number = 0;
+        if (self.rowsNumBlock) {
+            number = self.rowsNumBlock(i);
+        }else if(self.itemsBlock)
+        {
+            number = self.itemsBlock().count;
+        }
+        CGFloat sectionHeight = [self tableView:self.tableView heightForHeaderInSection:i];
+        height = height + sectionHeight;
+        for (NSInteger j = 0; j < number; j ++) {
+            CGFloat h = [self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:j inSection:i]];
+            height = height + h;
+        }
     }
+    
     if (height>maxHeight) {
         height=maxHeight;
         self.tableView.scrollEnabled = YES;
@@ -217,6 +252,9 @@
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.sectionsNumBlock) {
+        return self.sectionsNumBlock(tableView);
+    }
     return 1;
 }
 
@@ -246,6 +284,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.rowHeightBlock?self.rowHeightBlock(indexPath):44.f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return self.headerHeightBlock?self.headerHeightBlock(section):0;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return self.headerBlock?self.headerBlock(tableView,section):nil;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

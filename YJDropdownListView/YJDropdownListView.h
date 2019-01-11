@@ -18,26 +18,38 @@ typedef NS_OPTIONS(NSInteger, YJListViewBorder) {
 };
 
 typedef NSArray<NSString *> *(^DropdownItemsBlock)();
+typedef NSInteger(^DropdownSectionsNumBlock)(UITableView *tableView);
 typedef NSInteger(^DropdownRowsNumBlock)(NSInteger section);
 typedef CGFloat(^DropdownRowHeightBlock)(NSIndexPath *indexPath);
+typedef CGFloat(^DropdownHeaderHeightBlock)(NSInteger section);
 typedef UITableViewCell *(^DropdownCellBlock)(UITableView *tableView,NSIndexPath *indexPath,UITableViewCell *cell);
 typedef void (^DropdownSelectRowBlock)(UITableView *tableView,NSIndexPath *indexPath);
+typedef UIView *(^DropdownHeaderViewBlock)(UITableView *tableView,NSInteger section);
 
 typedef YJDropdownListView *(^DropdownListItems)(DropdownItemsBlock itemsBlock);
+typedef YJDropdownListView *(^DropdownSectionsNumber)(DropdownSectionsNumBlock sectionsNumBlock);
 typedef YJDropdownListView *(^DropdownRowsNumberInSection)(DropdownRowsNumBlock rowsNumBlock);
 typedef YJDropdownListView *(^DropdownRowHeightAtIndexPath)(DropdownRowHeightBlock rowHeightBlock);
+typedef YJDropdownListView *(^DropdownHeaderHeightInSection)(DropdownHeaderHeightBlock headerHeightBlock);
 typedef YJDropdownListView *(^DropdownConfigureCell)(DropdownCellBlock cellBlock);
 typedef YJDropdownListView *(^DropdowndSelectRowAtIndexPath)(DropdownSelectRowBlock selectBlock);
+typedef YJDropdownListView *(^DropdownConfigureHeaderView)(DropdownHeaderViewBlock headerBlock);
 typedef YJDropdownListView *(^DropdownListShow)(UIView *superView);
 @interface YJDropdownListView : UIView
 /// 列表items数据源
 @property (nonatomic, copy ,readonly) DropdownListItems items;
+/// 列表组数
+@property (nonatomic, copy ,readonly) DropdownSectionsNumber numberOfSectionsInTableView;
 /// 列表行数
 @property (nonatomic, copy ,readonly) DropdownRowsNumberInSection numberOfRowsInSection;
 /// 行高
 @property (nonatomic, copy ,readonly) DropdownRowHeightAtIndexPath heightForRowAtIndexPath;
+/// 组头高
+@property (nonatomic, copy ,readonly) DropdownHeaderHeightInSection heightForHeaderInSection;
 /// 自己构造cell数据源
 @property (nonatomic, copy ,readonly) DropdownConfigureCell cellForRowAtIndexPath;
+/// 头部视图
+@property (nonatomic, copy ,readonly) DropdownConfigureHeaderView viewForHeaderInSection;
 /// cell选中
 @property (nonatomic, copy ,readonly) DropdowndSelectRowAtIndexPath didSelectRowAtIndexPath;
 /// show

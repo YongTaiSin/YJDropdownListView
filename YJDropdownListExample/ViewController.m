@@ -12,18 +12,20 @@
 #define KScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define kRGBColor(r, g, b)              [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 
-@interface ViewController ()
+@interface ViewController ()<UITextFieldDelegate>
 @property (nonatomic,weak) UITextField *accountTF;
+@property (nonatomic,strong) UITextField *searchTF;
 @end
 
 @implementation ViewController
 
+#pragma mark - lifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupContentView];
 }
 
-
+#pragma mark - setup
 - (void)setupContentView
 {
     self.view.backgroundColor = kRGBColor(244, 244, 244);
@@ -87,6 +89,7 @@
 //方式二 自定义cell样式
 - (void)showDropDownlist2
 {
+    __weak typeof(self) weakSelf = self;
     YJDropdownListView *listView = [YJDropdownListView dropDownListView];
     listView.borderColor = kRGBColor(230,230,230);
     listView.borderWidth = 1;
@@ -105,14 +108,37 @@
         return cell;
     }).heightForRowAtIndexPath(^CGFloat(NSIndexPath *indexPath) {
         return 50.f;
-    }).showOnSuperview(self.accountTF).didSelectRowAtIndexPath(^void (UITableView *tableView,NSIndexPath *indexPath)
-                                                               {
-                                                                   NSLog(@"哈哈");
-                                                               });
+    }).heightForHeaderInSection(^CGFloat(NSInteger section) {
+        return 50.f;
+    }).viewForHeaderInSection(^UIView *(UITableView *tableView, NSInteger section) {
+        weakSelf.searchTF.frame = CGRectMake(0, 0, tableView.bounds.size.width, 50);
+        return weakSelf.searchTF;
+    }).showOnSuperview(self.accountTF).didSelectRowAtIndexPath(^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSLog(@"哈哈");
+        [weakSelf.searchTF resignFirstResponder];
+    });
 }
+
+#pragma mark - getter
+- (UITextField *)searchTF {
+    if (!_searchTF) {
+        _searchTF = [[UITextField alloc] init];
+        _searchTF.placeholder = @"傻逼";
+        _searchTF.backgroundColor = [UIColor yellowColor];
+        _searchTF.delegate = self;
+    }
+    return _searchTF;
+}
+
+#pragma mark - UITextFieldDelegate
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    NSLog(@"textFieldDidEndEditing");
+}
+
 #pragma mark - handler
 #pragma mark 登录事件
 - (void)loginClicked:(UIButton *)sender {
     [self showDropDownlist2];
 }
+
 @end
